@@ -1,0 +1,12 @@
+@import '../styles/variables.scss';
+
+.button {
+  box-shadow: none;
+  background-color: $COLOR-FIGMA-BLUE;
+  color: $COLOR-WHITE;
+  border-radius: 5px;
+  border: none;
+  padding: 8px 15px;
+  margin: 0 5px;
+  outline: none;
+}

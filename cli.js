@@ -2,11 +2,18 @@ const inquirer = require("inquirer");
 const fs = require("fs");
 const arg = require("arg");
 const chalk = require("chalk");
+const ora = require("ora");
 
 const templates = require("./jsonTemplates.js");
 const { exec } = require("child_process");
 
-export const createProjectTemplate = () => {
+const TEMPLATE_NAMES = {
+  javascript: "figma-react-plugin-template-js",
+  typescript: "figma-react-plugin-template-ts",
+};
+
+export const createProjectTemplate = (args) => {
+  let options = parseArgumentsIntoOptions(args);
   const CURR_DIR = process.cwd();
 
   console.log(chalk.cyan.bold("What would you like project to be called?"));
@@ -43,22 +50,67 @@ export const createProjectTemplate = () => {
           },
         ])
         .then((plugin) => {
-          triggerProjectCreation(name.projectName, plugin.pluginName);
+          if (!options.typescript && !options.javascript) {
+            console.log("");
+            inquirer
+              .prompt([
+                {
+                  name: "template",
+                  type: "list",
+                  message: "Please choose which template to use",
+                  choices: ["JavaScript", "TypeScript"],
+                  default: "JavaScript",
+                },
+              ])
+              .then((template) => {
+                triggerProjectCreation(
+                  name.projectName,
+                  plugin.pluginName,
+                  template.template
+                );
+              });
+          } else {
+            if (options.typescript) {
+              triggerProjectCreation(
+                name.projectName,
+                plugin.pluginName,
+                "TypeScript"
+              );
+            } else if (options.javascript) {
+              triggerProjectCreation(
+                name.projectName,
+                plugin.pluginName,
+                "javascript"
+              );
+            } else {
+              triggerProjectCreation(
+                name.projectName,
+                plugin.pluginName,
+                "javascript"
+              );
+            }
+          }
         });
     });
 
-  const triggerProjectCreation = (name, plugin) => {
+  const triggerProjectCreation = (name, plugin, template) => {
     console.log("");
+    console.log(template);
     console.log(chalk.green.bold("Creating your project..."));
-    console.log("P.S. This might take a while");
+    console.log("P.S. This might take a bit");
     const projectName = name;
     const pluginName = plugin;
-    const templatePath = `${__dirname}/templates/figma-react-plugin-template`;
+    let templatePath;
+    if (template == "javascript") {
+      templatePath = `${__dirname}/templates/${TEMPLATE_NAMES.javascript}`;
+    } else if (template == "typescript") {
+      templatePath = `${__dirname}/templates/${TEMPLATE_NAMES.typescript}`;
+    }
 
     fs.mkdirSync(`${CURR_DIR}/${projectName}`);
 
     createDirectoryContents(templatePath, projectName);
-    createJsonFiles(pluginName, projectName);
+    createJsonFiles(pluginName, projectName, template);
   };
 
   const createDirectoryContents = (templatePath, newProjectPath) => {
@@ -87,22 +139,33 @@ export const createProjectTemplate = () => {
     });
   };
 
-  const createJsonFiles = (pluginName, projectName) => {
+  const createJsonFiles = (pluginName, projectName, template) => {
     //Generate manifest.json
     const manifestPath = `${CURR_DIR}/${projectName}/manifest.json`;
     const manifestJson = templates.getManifestJson(pluginName);
     fs.writeFileSync(manifestPath, manifestJson, "utf8");
 
     //Generate package.json
+    let packageJson;
+    if (template == "javascript") {
+      packageJson = templates.getPackageJson(projectName, false);
+    } else if (template == "typescript") {
+      packageJson = templates.getPackageJson(projectName, true);
+    }
     const packagePath = `${CURR_DIR}/${projectName}/package.json`;
-    const packageJson = templates.getPackageJson(projectName);
     fs.writeFileSync(packagePath, packageJson, "utf8");
 
+    //Initialise loading spinner
     console.log("");
-    console.log(chalk.cyan("Installing packages..."));
+    const spinner = ora("Installing packages").start();
+    spinner.color = "blue";
+    spinner.text = "Installing packages";
+
+    //Run npm install
     let installCommand = exec(
       `cd ${projectName} && npm install`,
       function (err, stdout, stderr) {
+        spinner.stop();
         console.log("");
         console.log("---------------------");
 
@@ -118,5 +181,23 @@ export const createProjectTemplate = () => {
         if (err) throw err;
       }
     );
+  };
+};
+
+const parseArgumentsIntoOptions = (rawArgs) => {
+  const args = arg(
+    {
+      "--typescript": Boolean,
+      "--javascript": Boolean,
+      "-ts": "--typescript",
+      "-js": "--javascript",
+    },
+    {
+      argv: rawArgs.slice(2),
+    }
+  );
+  return {
+    typescript: args["--typescript"] || false,
+    javascript: args["--javascript"] || false,
   };
 };
