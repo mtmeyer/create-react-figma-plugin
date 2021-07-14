@@ -1,0 +1,23 @@
+{
+  "name": "create-react-figma-plugin",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mtmeyer/create-react-figma-plugin.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mtmeyer/create-react-figma-plugin/issues"
+  },
+  "homepage": "https://github.com/mtmeyer/create-react-figma-plugin#readme",
+  "dependencies": {
+    "chalk": "^4.1.1",
+    "inquirer": "^8.1.1"
+  }
+}
