@@ -53,7 +53,7 @@ export const createProjectTemplate = () => {
     console.log("P.S. This might take a while");
     const projectName = name;
     const pluginName = plugin;
-    const templatePath = `${__dirname}/figma-react-plugin-template`;
+    const templatePath = `${__dirname}/templates/figma-react-plugin-template`;
 
     fs.mkdirSync(`${CURR_DIR}/${projectName}`);
 

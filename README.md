@@ -8,16 +8,10 @@ You'll need to setup both your development environment and add the plugin to Fig
 
 ### Dev enironment
 
-Install the repository with npm.
+To create the project template, run the following command. It will create a new folder in the directory you're running the command from with the project template.
 
 ```sh
-npm i create-react-figma-plugin
-```
-
-Run the following command to create the project template
-
-```sh
-create-react-figma-plugin
+npx @mtmeyer/create-react-figma-plugin
 ```
 
 Follow the prompts in the CLI to generate the project. Then get the development server started.
