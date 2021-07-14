@@ -1,11 +1,11 @@
 const inquirer = require("inquirer");
+const { exec } = require("child_process");
 const fs = require("fs");
 const arg = require("arg");
 const chalk = require("chalk");
 const ora = require("ora");
 
 const templates = require("./jsonTemplates.js");
-const { exec } = require("child_process");
 
 const TEMPLATE_NAMES = {
   javascript: "figma-react-plugin-template-js",
@@ -95,15 +95,15 @@ export const createProjectTemplate = (args) => {
 
   const triggerProjectCreation = (name, plugin, template) => {
     console.log("");
-    console.log(template);
     console.log(chalk.green.bold("Creating your project..."));
     console.log("P.S. This might take a bit");
     const projectName = name;
     const pluginName = plugin;
+
     let templatePath;
-    if (template == "javascript") {
+    if (template.toLowerCase() == "javascript") {
       templatePath = `${__dirname}/templates/${TEMPLATE_NAMES.javascript}`;
-    } else if (template == "typescript") {
+    } else if (template.toLowerCase() == "typescript") {
       templatePath = `${__dirname}/templates/${TEMPLATE_NAMES.typescript}`;
     }
 
@@ -147,9 +147,9 @@ export const createProjectTemplate = (args) => {
 
     //Generate package.json
     let packageJson;
-    if (template == "javascript") {
+    if (template.toLowerCase() == "javascript") {
       packageJson = templates.getPackageJson(projectName, false);
-    } else if (template == "typescript") {
+    } else if (template.toLowerCase() == "typescript") {
       packageJson = templates.getPackageJson(projectName, true);
     }
     const packagePath = `${CURR_DIR}/${projectName}/package.json`;
@@ -168,6 +168,7 @@ export const createProjectTemplate = (args) => {
         spinner.stop();
         console.log("");
         console.log("---------------------");
+        console.log("");
 
         console.log(chalk.green.bold("Project successfully created"));
         console.log(
@@ -175,8 +176,10 @@ export const createProjectTemplate = (args) => {
         );
         console.log("");
         console.log(
-          chalk`Read the {bold README.md} for instructions on how to add your plugin to Figma for development`
+          chalk`Read the {bold Readme} for instructions on how to add your plugin to Figma for development`
         );
+
+        console.log("");
         console.log("---------------------");
         if (err) throw err;
       }
