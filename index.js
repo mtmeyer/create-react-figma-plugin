@@ -3,6 +3,7 @@ const fs = require("fs");
 const chalk = require("chalk");
 
 const templates = require("./jsonTemplates.js");
+const { exec } = require("child_process");
 
 const CURR_DIR = process.cwd();
 
@@ -13,7 +14,11 @@ inquirer
       name: "projectName",
       type: "input",
       message: "Project name:",
-      validate: (input) => fieldValidation(input),
+      validate: (input) => {
+        if (/^([a-z\-\_\d])+$/.test(input)) return true;
+        else
+          return "Project name may only include lowecase letters, numbers, underscores and hashes.";
+      },
     },
   ])
   .then((name) => {
@@ -28,7 +33,11 @@ inquirer
           type: "input",
           message: "Figma plugin name:",
           default: name.projectName,
-          validate: (input) => fieldValidation(input),
+          validate: (input) => {
+            if (/^([A-Za-z\-\_\d ])+$/.test(input)) return true;
+            else
+              return "Plugin name may only include letters, numbers, underscores, hashes and spaces.";
+          },
         },
       ])
       .then((plugin) => {
@@ -50,7 +59,7 @@ const triggerProjectCreation = (name, plugin) => {
   createJsonFiles(pluginName, projectName);
 };
 
-function createDirectoryContents(templatePath, newProjectPath) {
+const createDirectoryContents = (templatePath, newProjectPath) => {
   const filesToCreate = fs.readdirSync(templatePath);
 
   filesToCreate.forEach((file) => {
@@ -74,7 +83,7 @@ function createDirectoryContents(templatePath, newProjectPath) {
       );
     }
   });
-}
+};
 
 const createJsonFiles = (pluginName, projectName) => {
   //Generate manifest.json
@@ -86,10 +95,25 @@ const createJsonFiles = (pluginName, projectName) => {
   const packagePath = `${CURR_DIR}/${projectName}/package.json`;
   const packageJson = templates.getPackageJson(projectName);
   fs.writeFileSync(packagePath, packageJson, "utf8");
-};
 
-const fieldValidation = (input) => {
-  if (/^([A-Za-z\-\_\d])+$/.test(input)) return true;
-  else
-    return "Plugin name may only include letters, numbers, underscores and hashes.";
+  console.log("");
+  console.log(chalk.cyan("Installing packages..."));
+  let installCommand = exec(
+    `cd ${projectName} && npm install`,
+    function (err, stdout, stderr) {
+      console.log("");
+      console.log("---------------------");
+
+      console.log(chalk.green.bold("Project successfully created"));
+      console.log(
+        chalk`Run '{magenta.bold cd ${projectName} && npm run dev}' to run the development server.`
+      );
+      console.log("");
+      console.log(
+        chalk`Read the {bold README.md} for instructions on how to add your plugin to Figma for development`
+      );
+      console.log("---------------------");
+      if (err) throw err;
+    }
+  );
 };
