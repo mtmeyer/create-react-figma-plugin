@@ -8,10 +8,16 @@ You'll need to setup both your development environment and add the plugin to Fig
 
 ### Dev enironment
 
-Clone the repository and navigate to it in the terminal and run the following command.
+Install the repository with npm.
 
 ```sh
-node index.js
+npm i create-react-figma-plugin
+```
+
+Run the following command to create the project template
+
+```sh
+create-react-figma-plugin
 ```
 
 Follow the prompts in the CLI to generate the project. Then get the development server started.

@@ -1,23 +1,38 @@
 {
-  "name": "create-react-figma-plugin",
+  "name": "@mtmeyer/create-react-figma-plugin",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "A tool for creating a starter project for creating a Figma plugin using a React UI",
+  "main": "cli.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "create-react-figma-plugin": "node cli.js"
+  },
+  "bin": {
+    "@mtmeyer/create-react-figma-plugin": "bin/create-react-figma-plugin",
+    "create-react-figma-plugin": "bin/create-react-figma-plugin"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/mtmeyer/create-react-figma-plugin.git"
   },
-  "author": "",
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "cli",
+    "react",
+    "figma",
+    "figma plugin"
+  ],
+  "author": "Michael Meyer",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/mtmeyer/create-react-figma-plugin/issues"
   },
   "homepage": "https://github.com/mtmeyer/create-react-figma-plugin#readme",
   "dependencies": {
+    "arg": "^5.0.0",
     "chalk": "^4.1.1",
+    "esm": "^3.2.25",
     "inquirer": "^8.1.1"
   }
 }
