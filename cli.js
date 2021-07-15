@@ -17,6 +17,7 @@ export const createProjectTemplate = (args) => {
   const CURR_DIR = process.cwd();
   let BUILD_DIR;
 
+  //Ask for project name
   console.log(chalk.cyan.bold("What would you like project to be called?"));
   inquirer
     .prompt([
@@ -32,12 +33,18 @@ export const createProjectTemplate = (args) => {
       },
     ])
     .then((name) => {
+      // Set build directory based on input args
       if (options.currentDirectory) {
         BUILD_DIR = `${CURR_DIR}`;
+        console.log("build dir");
+        console.log(BUILD_DIR);
       } else {
         BUILD_DIR = `${CURR_DIR}/${name.projectName}`;
+        console.log("build dir");
+        console.log(BUILD_DIR);
       }
 
+      // Ask for Figma plugin name
       console.log("");
       console.log(
         chalk.cyan.bold("What would you like the Figma plugin to be called?")
@@ -57,6 +64,7 @@ export const createProjectTemplate = (args) => {
           },
         ])
         .then((plugin) => {
+          // Ask for whether the project should be created with JS or TS
           if (!options.typescript && !options.javascript) {
             console.log("");
             inquirer
@@ -107,6 +115,7 @@ export const createProjectTemplate = (args) => {
     const projectName = name;
     const pluginName = plugin;
 
+    // Set template based on input args
     let templatePath;
     if (template.toLowerCase() == "javascript") {
       templatePath = `${__dirname}/templates/${TEMPLATE_NAMES.javascript}`;
@@ -114,11 +123,13 @@ export const createProjectTemplate = (args) => {
       templatePath = `${__dirname}/templates/${TEMPLATE_NAMES.typescript}`;
     }
 
+    // Create directory if --currDir flag was not used
     if (!options.currentDirectory) {
-      fs.mkdirSync(`${CURR_DIR}/${projectName}`);
+      fs.mkdirSync(`${BUILD_DIR}`);
     }
 
-    createDirectoryContents(templatePath, projectName);
+    //Trigger file creation functions
+    createDirectoryContents(templatePath, BUILD_DIR);
     createJsonFiles(pluginName, projectName, template);
   };
 
@@ -128,18 +139,18 @@ export const createProjectTemplate = (args) => {
     filesToCreate.forEach((file) => {
       const origFilePath = `${templatePath}/${file}`;
 
-      // get stats about the current file
+      // Get current file info
       const stats = fs.statSync(origFilePath);
 
       if (stats.isFile()) {
         const contents = fs.readFileSync(origFilePath, "utf8");
 
-        const writePath = `${BUILD_DIR}/${file}`;
+        const writePath = `${newProjectPath}/${file}`;
         fs.writeFileSync(writePath, contents, "utf8");
       } else if (stats.isDirectory()) {
-        fs.mkdirSync(`${BUILD_DIR}/${file}`);
+        // Create subfolders with contents
+        fs.mkdirSync(`${newProjectPath}/${file}`);
 
-        // recursive call
         createDirectoryContents(
           `${templatePath}/${file}`,
           `${newProjectPath}/${file}`
@@ -204,6 +215,7 @@ export const createProjectTemplate = (args) => {
   };
 };
 
+// Define input arguments
 const parseArgumentsIntoOptions = (rawArgs) => {
   const args = arg(
     {

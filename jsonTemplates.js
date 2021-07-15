@@ -10,6 +10,7 @@ exports.getManifestJson = (pluginName) => {
   return JSON.stringify(manifestObject, null, 2);
 };
 
+// TODO work out better way to generate package.json
 exports.getPackageJson = (projectName, typescript) => {
   let packageObject;
   if (typescript) {
