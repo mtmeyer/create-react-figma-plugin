@@ -24,7 +24,7 @@
     "figma plugin"
   ],
   "author": "Michael Meyer",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/mtmeyer/create-react-figma-plugin/issues"
   },
