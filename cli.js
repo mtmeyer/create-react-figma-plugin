@@ -1,11 +1,11 @@
-const inquirer = require("inquirer");
-const { exec } = require("child_process");
-const fs = require("fs");
-const arg = require("arg");
-const chalk = require("chalk");
-const ora = require("ora");
+import inquirer from "inquirer";
+import { exec } from "child_process";
+import fs from "fs";
+import arg from "arg";
+import chalk from "chalk";
+import ora from "ora";
 
-const templates = require("./jsonTemplates.js");
+import templates from "./jsonTemplates.js";
 
 const TEMPLATE_NAMES = {
   javascript: "figma-react-plugin-template-js",
@@ -15,6 +15,7 @@ const TEMPLATE_NAMES = {
 export const createProjectTemplate = (args) => {
   let options = parseArgumentsIntoOptions(args);
   const CURR_DIR = process.cwd();
+  let BUILD_DIR;
 
   console.log(chalk.cyan.bold("What would you like project to be called?"));
   inquirer
@@ -31,6 +32,12 @@ export const createProjectTemplate = (args) => {
       },
     ])
     .then((name) => {
+      if (options.currentDirectory) {
+        BUILD_DIR = `${CURR_DIR}`;
+      } else {
+        BUILD_DIR = `${CURR_DIR}/${name.projectName}`;
+      }
+
       console.log("");
       console.log(
         chalk.cyan.bold("What would you like the Figma plugin to be called?")
@@ -107,7 +114,9 @@ export const createProjectTemplate = (args) => {
       templatePath = `${__dirname}/templates/${TEMPLATE_NAMES.typescript}`;
     }
 
-    fs.mkdirSync(`${CURR_DIR}/${projectName}`);
+    if (!options.currentDirectory) {
+      fs.mkdirSync(`${CURR_DIR}/${projectName}`);
+    }
 
     createDirectoryContents(templatePath, projectName);
     createJsonFiles(pluginName, projectName, template);
@@ -125,10 +134,10 @@ export const createProjectTemplate = (args) => {
       if (stats.isFile()) {
         const contents = fs.readFileSync(origFilePath, "utf8");
 
-        const writePath = `${CURR_DIR}/${newProjectPath}/${file}`;
+        const writePath = `${BUILD_DIR}/${file}`;
         fs.writeFileSync(writePath, contents, "utf8");
       } else if (stats.isDirectory()) {
-        fs.mkdirSync(`${CURR_DIR}/${newProjectPath}/${file}`);
+        fs.mkdirSync(`${BUILD_DIR}/${file}`);
 
         // recursive call
         createDirectoryContents(
@@ -141,7 +150,7 @@ export const createProjectTemplate = (args) => {
 
   const createJsonFiles = (pluginName, projectName, template) => {
     //Generate manifest.json
-    const manifestPath = `${CURR_DIR}/${projectName}/manifest.json`;
+    const manifestPath = `${BUILD_DIR}/manifest.json`;
     const manifestJson = templates.getManifestJson(pluginName);
     fs.writeFileSync(manifestPath, manifestJson, "utf8");
 
@@ -152,7 +161,7 @@ export const createProjectTemplate = (args) => {
     } else if (template.toLowerCase() == "typescript") {
       packageJson = templates.getPackageJson(projectName, true);
     }
-    const packagePath = `${CURR_DIR}/${projectName}/package.json`;
+    const packagePath = `${BUILD_DIR}/package.json`;
     fs.writeFileSync(packagePath, packageJson, "utf8");
 
     //Initialise loading spinner
@@ -162,28 +171,36 @@ export const createProjectTemplate = (args) => {
     spinner.text = "Installing packages";
 
     //Run npm install
-    let installCommand = exec(
-      `cd ${projectName} && npm install`,
-      function (err, stdout, stderr) {
-        spinner.stop();
-        console.log("");
-        console.log("---------------------");
-        console.log("");
+    let command;
+    let completionInstruction;
+    if (options.currentDirectory) {
+      command = `npm install`;
+      completionInstruction = `npm run dev`;
+    } else {
+      command = `cd ${projectName} && npm install`;
+      completionInstruction = `cd ${projectName} && npm run dev`;
+    }
 
-        console.log(chalk.green.bold("Project successfully created"));
-        console.log(
-          chalk`Run '{magenta.bold cd ${projectName} && npm run dev}' to run the development server.`
-        );
-        console.log("");
-        console.log(
-          chalk`Read the {bold Readme} for instructions on how to add your plugin to Figma for development`
-        );
+    let installCommand = exec(command, function (err, stdout, stderr) {
+      spinner.stop();
+      console.log("");
+      console.log("---------------------");
+      console.log("");
 
-        console.log("");
-        console.log("---------------------");
-        if (err) throw err;
-      }
-    );
+      console.log(chalk.green.bold("Project successfully created"));
+
+      console.log(
+        chalk`Run '{magenta.bold ${completionInstruction}}' to start the development server.`
+      );
+      console.log("");
+      console.log(
+        chalk`Read the {bold Readme} for instructions on how to add your plugin to Figma for development`
+      );
+
+      console.log("");
+      console.log("---------------------");
+      if (err) throw err;
+    });
   };
 };
 
@@ -192,6 +209,8 @@ const parseArgumentsIntoOptions = (rawArgs) => {
     {
       "--typescript": Boolean,
       "--javascript": Boolean,
+      "--currDir": Boolean,
+      "--currentDirectory": "--currDir",
       "-ts": "--typescript",
       "-js": "--javascript",
     },
@@ -202,5 +221,6 @@ const parseArgumentsIntoOptions = (rawArgs) => {
   return {
     typescript: args["--typescript"] || false,
     javascript: args["--javascript"] || false,
+    currentDirectory: args["--currDir"] || false,
   };
 };
