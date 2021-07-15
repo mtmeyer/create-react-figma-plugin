@@ -131,6 +131,7 @@ export const createProjectTemplate = (args) => {
     //Trigger file creation functions
     createDirectoryContents(templatePath, BUILD_DIR);
     createJsonFiles(pluginName, projectName, template);
+    createGitIgnore(BUILD_DIR);
   };
 
   const createDirectoryContents = (templatePath, newProjectPath) => {
@@ -215,6 +216,25 @@ export const createProjectTemplate = (args) => {
   };
 };
 
+const createGitIgnore = (directory) => {
+  const ignorePath = `${directory}/.gitIgnore`;
+  const content = `.DS_*
+    *.log
+    logs
+    **/*.backup.*
+    **/*.back.*
+
+    node_modules
+    bower_components
+
+    *.sublime*
+
+    psd
+    thumb
+    sketch`;
+  fs.writeFileSync(ignorePath, content, "utf8");
+};
+
 // Define input arguments
 const parseArgumentsIntoOptions = (rawArgs) => {
   const args = arg(
@@ -223,8 +243,8 @@ const parseArgumentsIntoOptions = (rawArgs) => {
       "--javascript": Boolean,
       "--currDir": Boolean,
       "--currentDirectory": "--currDir",
-      "-ts": "--typescript",
-      "-js": "--javascript",
+      "--ts": "--typescript",
+      "--js": "--javascript",
     },
     {
       argv: rawArgs.slice(2),
