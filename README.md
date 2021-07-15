@@ -4,6 +4,8 @@
 
 A tool to get you started making Figma plugins with a React UI <sup>1</sup>.
 
+The templates this tool creates are very much inspired by [@nirsky's](https://github.com/nirsky) fantastic project [figma-plugin-react-template](https://github.com/nirsky/figma-plugin-react-template) ❤️
+
 _This tool is in currently in beta so please report any bugs or issues_ 🙏
 
 ## Get started
