@@ -9,4 +9,9 @@
   padding: 8px 15px;
   margin: 0 5px;
   outline: none;
+
+  &:hover {
+    background-color: darken($COLOR-FIGMA-BLUE, 15%);
+    cursor: pointer;
+  }
 }

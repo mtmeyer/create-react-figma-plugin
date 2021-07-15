@@ -218,20 +218,21 @@ export const createProjectTemplate = (args) => {
 
 const createGitIgnore = (directory) => {
   const ignorePath = `${directory}/.gitIgnore`;
-  const content = `.DS_*
-    *.log
-    logs
-    **/*.backup.*
-    **/*.back.*
+  const content = `
+.DS_*
+*.log
+logs
+**/*.backup.*
+**/*.back.*
 
-    node_modules
-    bower_components
+node_modules
+bower_components
 
-    *.sublime*
+*.sublime*
 
-    psd
-    thumb
-    sketch`;
+psd
+thumb
+sketch`;
   fs.writeFileSync(ignorePath, content, "utf8");
 };
 
