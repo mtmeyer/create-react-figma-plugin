@@ -1,6 +1,8 @@
 # Create React Figma Plugin
 
-A tool to get you started making Figma plugins with a React UI.
+A tool to get you started making Figma plugins with a React UI. [^1]
+
+_This tool is in currently in beta so please report any bugs or issues_ 🙏
 
 ## Get started
 
@@ -47,3 +49,7 @@ Now we will add the plugin to Figma for development. Note that this will not pub
 - --javascript, --js - Create project with vanilla JavaScript
 - --typescript, --ts - Create project with TypeScript
 - --currDir, --currentDirectory - Creates project in current directory rather than creating a new directory.
+
+---
+
+[^1]: Note: I am not affiliated with Figma, I just ❤️ the tool.
