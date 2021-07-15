@@ -14,6 +14,12 @@ To create the project template, run the following command. It will create a new 
 npx @mtmeyer/create-react-figma-plugin
 ```
 
+or for Typescript run the following command:
+
+```sh
+npx @mtmeyer/create-react-figma-plugin --typescript
+```
+
 Follow the prompts in the CLI to generate the project. Then get the development server started.
 
 ```sh
@@ -33,3 +39,11 @@ Now we will add the plugin to Figma for development. Note that this will not pub
 4. In the `Link existing plugin` section, click the box to choose your `manifest.json` file
 5. Locate the `manifest.json` in your newly created project and then select `Open`
 6. Now you will be able to use this plugin within a design file 🎉
+
+## Options
+
+`@mtmeyer/create-react-figma-plugin` comes with the following options:
+
+- --javascript, --js - Create project with vanilla JavaScript
+- --typescript, --ts - Create project with TypeScript
+- --currDir, --currentDirectory - Creates project in current directory rather than creating a new directory.
