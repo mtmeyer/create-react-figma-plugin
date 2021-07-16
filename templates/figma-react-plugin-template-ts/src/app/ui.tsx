@@ -1,5 +1,5 @@
 import React from 'react';
-import './styles/ui.scss';
+import './ui.scss';
 
 import Button from './components/Button';
 
@@ -15,17 +15,17 @@ const UI = ({}) => {
 
   const onCreate = () => {
     const count = parseInt(textbox.current.value, 10);
-    parent.postMessage({pluginMessage: {type: 'create-rectangles', count}}, '*');
+    parent.postMessage({ pluginMessage: { type: 'create-rectangles', count } }, '*');
   };
 
   const onCancel = () => {
-    parent.postMessage({pluginMessage: {type: 'cancel'}}, '*');
+    parent.postMessage({ pluginMessage: { type: 'cancel' } }, '*');
   };
 
   React.useEffect(() => {
     // This is how we read messages sent from the plugin controller
     window.onmessage = (event) => {
-      const {type, message} = event.data.pluginMessage;
+      const { type, message } = event.data.pluginMessage;
       if (type === 'create-rectangles') {
         console.log(`Figma Says: ${message}`);
       }

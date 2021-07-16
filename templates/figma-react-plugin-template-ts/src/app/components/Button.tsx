@@ -6,7 +6,7 @@ interface ComponentProps {
   onClick: React.MouseEventHandler<HTMLButtonElement>;
   children: JSX.Element | string;
 }
-const Button = ({onClick, children}: ComponentProps) => {
+const Button = ({ onClick, children }: ComponentProps) => {
   return (
     <button onClick={onClick} className={styles.button}>
       {children}
