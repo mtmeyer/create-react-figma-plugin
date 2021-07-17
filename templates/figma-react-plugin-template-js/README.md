@@ -1,7 +1,5 @@
 # Create React Figma Plugin
 
-![](img/header.svg)
-
 A tool to get you started making Figma plugins with a React UI <sup>1</sup>.
 
 _This tool is in currently in beta so please report any bugs or issues_ 🙏

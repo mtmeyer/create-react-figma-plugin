@@ -6,8 +6,6 @@ import chalk from "chalk";
 import ora from "ora";
 import editJsonFile from "edit-json-file";
 
-import templates from "./jsonTemplates.js";
-
 const TEMPLATE_NAMES = {
   javascript: "figma-react-plugin-template-js",
   typescript: "figma-react-plugin-template-ts",
