@@ -1,5 +1,5 @@
 import React from 'react';
-import './ui.scss';
+import styles from './ui.module.scss';
 
 import Button from './components/Button';
 
@@ -31,13 +31,17 @@ const UI = ({}) => {
   }, []);
 
   return (
-    <div>
+    <div className={styles.container}>
       <h2>Rectangle Creator</h2>
       <p>
         Count: <input ref={countRef} />
       </p>
-      <Button onClick={onCreate}>Create</Button>
-      <Button onClick={onCancel}>Cancel</Button>
+      <div className={styles.buttonContainer}>
+        <Button onClick={onCreate}>Create</Button>
+        <Button onClick={onCancel} secondary>
+          Cancel
+        </Button>
+      </div>
     </div>
   );
 };

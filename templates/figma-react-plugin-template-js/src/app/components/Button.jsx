@@ -2,9 +2,11 @@ import React from 'react';
 
 import styles from './Button.module.scss';
 
-const Button = ({ onClick, children }) => {
+const Button = ({ onClick, children, secondary = false }) => {
+  const buttonType = secondary ? styles.secondary : styles.primary;
+
   return (
-    <button onClick={onClick} className={styles.button}>
+    <button onClick={onClick} className={`${styles.base} ${buttonType}`}>
       {children}
     </button>
   );

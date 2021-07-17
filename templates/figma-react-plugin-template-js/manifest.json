@@ -1,0 +1,7 @@
+{
+  "name": "figma-plugin-rollup-test",
+  "id": "00000000",
+  "api": "1.0.0",
+  "main": "dist/code.js",
+  "ui": "dist/index.html"
+}

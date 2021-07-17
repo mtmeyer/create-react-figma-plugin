@@ -1,0 +1,10 @@
+@import './styles/variables.scss';
+
+.container {
+  width: $FIGMA-UI-WIDTH;
+  height: $FIGMA-UI-HEIGHT;
+}
+
+.buttonContainer {
+  display: flex;
+}

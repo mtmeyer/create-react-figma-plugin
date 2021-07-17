@@ -15,6 +15,7 @@ figma.ui.onmessage = (msg) => {
     figma.currentPage.selection = nodes;
     figma.viewport.scrollAndZoomIntoView(nodes);
 
+    // This is how figma responds back to the ui
     figma.ui.postMessage({
       type: 'create-rectangles',
       message: `Created ${msg.count} Rectangles`,
