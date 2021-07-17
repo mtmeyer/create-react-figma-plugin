@@ -7,6 +7,7 @@ import { terser } from 'rollup-plugin-terser';
 import postcss from 'rollup-plugin-postcss';
 import html from 'rollup-plugin-bundle-html-plus';
 import typescript from 'rollup-plugin-typescript';
+import svgr from '@svgr/rollup';
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -50,6 +51,8 @@ export default [
       }),
 
       commonjs(),
+
+      svgr(),
 
       // Config to allow sass and css modules
       postcss({

@@ -51,13 +51,32 @@ For more information on developing plugins in Figma, see:
 - [Figma's Introduction to writing plugins](https://www.figma.com/plugin-docs/intro/)
 - [Figma Plugin API documentation](https://www.figma.com/plugin-docs/api/api-overview/)
 
-## Options
+## CLI Options
 
 `@mtmeyer/create-react-figma-plugin` comes with the following options:
 
 - --javascript, --js - Create project with vanilla JavaScript
 - --typescript, --ts - Create project with TypeScript
 - --currDir, --currentDirectory - Creates project in current directory rather than creating a new directory.
+
+## SVG's
+
+If you want to use svg's in your plugin UI, I recommend you use the 'import' syntax and add it into your JSX as a component.
+
+**Example**
+
+```javascript
+import DopeIcon from "./assets/dope-icon.svg";
+
+const App = () => {
+  return (
+    <div className="container">
+      <h1>Heading</h1>
+      <DopeIcon width={24} height={24} fill="#18a0fb" />
+    </div>
+  );
+};
+```
 
 ## Development workflow
 
