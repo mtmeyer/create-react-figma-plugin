@@ -33,7 +33,7 @@ npm run dev
 
 The development server is now running and the plugin is ready to be added to Figma for development.
 
-Note: The development server also serves the plugin UI on http://localhost:5000/ to make tweaking the UI far more efficient.
+Note: The development server also serves the plugin UI on http://localhost:5000/ to make tweaking the UI far more efficient. [More info in Development Workflow section](#Development-workflow)
 
 ### Figma
 
@@ -45,6 +45,11 @@ Now we will add the plugin to Figma for development. Note that this will not pub
 4. In the `Link existing plugin` section, click the box to choose your `manifest.json` file
 5. Locate the `manifest.json` in your newly created project and then select `Open`
 6. Now you will be able to use this plugin within a design file 🎉
+
+For more information on developing plugins in Figma, see:
+
+- [Figma's Introduction to writing plugins](https://www.figma.com/plugin-docs/intro/)
+- [Figma Plugin API documentation](https://www.figma.com/plugin-docs/api/api-overview/)
 
 ## Options
 
@@ -66,7 +71,7 @@ Given these plugins are not meant to be run outside of the context of Figma, the
 
 **Erros in the console:**
 
-You will notice errors in the console which relate to Figma specific functions (e.g. `window.onMessage`) that you can call from the UI. This is not an issue as these should work when run in Figma (assuming the code is all correct of course 🤓)
+You will notice errors in the console which relate to Figma specific functions (e.g. `window.onMessage`) that you can call from the UI. This is not an issue as these should work when run in Figma (assuming the code is bug free of course 🤓)
 
 **Width & height:**
 
