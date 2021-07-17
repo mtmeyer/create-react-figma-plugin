@@ -4,6 +4,7 @@ import fs from "fs";
 import arg from "arg";
 import chalk from "chalk";
 import ora from "ora";
+import editJsonFile from "edit-json-file";
 
 import templates from "./jsonTemplates.js";
 
@@ -161,20 +162,17 @@ export const createProjectTemplate = (args) => {
   };
 
   const createJsonFiles = (pluginName, projectName, template) => {
-    //Generate manifest.json
+    //Edit manifest.json
     const manifestPath = `${BUILD_DIR}/manifest.json`;
-    const manifestJson = templates.getManifestJson(pluginName);
-    fs.writeFileSync(manifestPath, manifestJson, "utf8");
+    let manifestFile = editJsonFile(manifestPath);
+    manifestFile.set("name", pluginName);
+    manifestFile.save();
 
-    //Generate package.json
-    let packageJson;
-    if (template.toLowerCase() == "javascript") {
-      packageJson = templates.getPackageJson(projectName, false);
-    } else if (template.toLowerCase() == "typescript") {
-      packageJson = templates.getPackageJson(projectName, true);
-    }
+    //Edit package.json
     const packagePath = `${BUILD_DIR}/package.json`;
-    fs.writeFileSync(packagePath, packageJson, "utf8");
+    let packageFile = editJsonFile(packagePath);
+    packageFile.set("name", projectName);
+    packageFile.save();
 
     //Initialise loading spinner
     console.log("");
@@ -217,7 +215,7 @@ export const createProjectTemplate = (args) => {
 };
 
 const createGitIgnore = (directory) => {
-  const ignorePath = `${directory}/.gitIgnore`;
+  const ignorePath = `${directory}/.gitignore`;
   const content = `
 .DS_*
 *.log

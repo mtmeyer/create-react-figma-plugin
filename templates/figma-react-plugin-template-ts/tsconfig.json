@@ -3,6 +3,7 @@
     "target": "es6",
     "outDir": "dist",
     "jsx": "react",
+    "allowJs": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "experimentalDecorators": true,
@@ -10,6 +11,6 @@
     "noImplicitAny": false,
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
-    "typeRoots": ["./node_modules/@types", "./node_modules/@figma"]
+    "typeRoots": ["./node_modules/@types", "./node_modules/@figma", "./typings"]
   }
 }

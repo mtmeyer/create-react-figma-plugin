@@ -1,17 +1,33 @@
 @import '../styles/variables.scss';
 
-.button {
+.base {
   box-shadow: none;
-  background-color: $COLOR-FIGMA-BLUE;
-  color: $COLOR-WHITE;
   border-radius: 5px;
-  border: none;
   padding: 8px 15px;
   margin: 0 5px;
   outline: none;
+  border-radius: 5px;
+}
+
+.primary {
+  background-color: $COLOR-FIGMA-BLUE;
+  color: $COLOR-WHITE;
+  border: none;
 
   &:hover {
     background-color: darken($COLOR-FIGMA-BLUE, 15%);
     cursor: pointer;
+  }
+}
+
+.secondary {
+  background-color: $COLOR-WHITE;
+  color: $COLOR-FIGMA-BLUE;
+  border: 2px solid $COLOR-FIGMA-BLUE;
+
+  &:hover {
+    border-color: darken($COLOR-FIGMA-BLUE, 15%);
+    cursor: pointer;
+    text-decoration: underline;
   }
 }
