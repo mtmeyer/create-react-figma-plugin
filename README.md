@@ -4,8 +4,6 @@
 
 A tool to get you started making Figma plugins with a React UI <sup>1</sup>.
 
-The templates this tool creates are very much inspired by [@nirsky's](https://github.com/nirsky) fantastic project [figma-plugin-react-template](https://github.com/nirsky/figma-plugin-react-template) ❤️
-
 _This tool is in currently in beta so please report any bugs or issues_ 🙏
 
 ## Get started
@@ -35,6 +33,8 @@ npm run dev
 
 The development server is now running and the plugin is ready to be added to Figma for development.
 
+Note: The development server also serves the plugin UI on http://localhost:5000/ to make tweaking the UI far more efficient.
+
 ### Figma
 
 Now we will add the plugin to Figma for development. Note that this will not publish the plugin and it will only be visible to you.
@@ -53,6 +53,33 @@ Now we will add the plugin to Figma for development. Note that this will not pub
 - --javascript, --js - Create project with vanilla JavaScript
 - --typescript, --ts - Create project with TypeScript
 - --currDir, --currentDirectory - Creates project in current directory rather than creating a new directory.
+
+## Development workflow
+
+The typical workflow for creating Figma plugins (in my experience) includes a lot of back and forth between the coding environment and Figma, constantly closing and opening the plugin. I've included a development server that runs the plugin UI on http://localhost:5000/ which can be run in the browser to help streamline this.
+
+You will not be able to test anything which relies on Figma itself in this environment (e.g. `parent.postMessage`), it is only really useful for building the look and feel of your UI.
+
+### Quirks
+
+Given these plugins are not meant to be run outside of the context of Figma, there are a few minor quirks when develping the UI in the browser.
+
+**Erros in the console:**
+
+You will notice errors in the console which relate to Figma specific functions (e.g. `window.onMessage`) that you can call from the UI. This is not an issue as these should work when run in Figma (assuming the code is all correct of course 🤓)
+
+**Width & height:**
+
+Figma plugins run in a small UI with a set width and height much smaller than a browser window. To make sure what you're seeing in the browser is as close to how it will display in Figma as possible, set a width and height on the parent div of the UI which matches the dimensions you've set for the plugin UI.
+
+The default width of Figma's plugin window is:
+
+```
+width: 300px;
+height: 200px;
+```
+
+You can set [custom dimensions for the plugin UI](https://www.figma.com/plugin-docs/api/figma-ui/), just make sure you match the width and height of the css container, with the plugin dimensions.
 
 ---
 
