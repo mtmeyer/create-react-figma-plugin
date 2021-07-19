@@ -25,16 +25,13 @@ export default [
       // What extensions is rollup looking for
       resolve({
         extensions: ['.jsx', '.js', '.json'],
+        browser: true,
+        dedupe: ['react', 'react-dom'],
       }),
 
       // Manage process.env
       replace({
         preventAssignment: true,
-        process: JSON.stringify({
-          env: {
-            isProd: production,
-          },
-        }),
         'process.env.NODE_ENV': JSON.stringify(production),
       }),
 
@@ -54,7 +51,7 @@ export default [
 
       // Config to allow sass and css modules
       postcss({
-        extensions: ['.css, .scss, .sass'],
+        extract: false,
         modules: true,
         use: ['sass'],
       }),
