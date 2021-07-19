@@ -17,7 +17,9 @@ export const createProjectTemplate = (args) => {
   let BUILD_DIR;
 
   //Ask for project name
-  console.log(chalk.cyan.bold("What would you like project to be called?"));
+  console.log(
+    chalk.cyan.bold("What would you like paaaaaaaaroject to be called?")
+  );
   inquirer
     .prompt([
       {
@@ -117,9 +119,9 @@ export const createProjectTemplate = (args) => {
     // Set template based on input args
     let templatePath;
     if (template.toLowerCase() == "javascript") {
-      templatePath = `${__dirname}/templates/${TEMPLATE_NAMES.javascript}`;
+      templatePath = `${__dirname}/../templates/${TEMPLATE_NAMES.javascript}`;
     } else if (template.toLowerCase() == "typescript") {
-      templatePath = `${__dirname}/templates/${TEMPLATE_NAMES.typescript}`;
+      templatePath = `${__dirname}/../templates/${TEMPLATE_NAMES.typescript}`;
     }
 
     // Create directory if --currDir flag was not used
