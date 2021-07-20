@@ -17,9 +17,7 @@ export const createProjectTemplate = (args) => {
   let BUILD_DIR;
 
   //Ask for project name
-  console.log(
-    chalk.cyan.bold("What would you like paaaaaaaaroject to be called?")
-  );
+  console.log(chalk.cyan.bold("What would you like the project to be called?"));
   inquirer
     .prompt([
       {
@@ -235,7 +233,8 @@ sketch`;
 };
 
 // Define input arguments
-const parseArgumentsIntoOptions = (rawArgs) => {
+export const parseArgumentsIntoOptions = (rawArgs) => {
+  //TODO handle when user inputs both --ts & --js
   const args = arg(
     {
       "--typescript": Boolean,
