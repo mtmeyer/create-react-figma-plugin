@@ -129,7 +129,7 @@ export const createProjectTemplate = (args) => {
 
     //Trigger file creation functions
     createDirectoryContents(templatePath, BUILD_DIR);
-    createJsonFiles(pluginName, projectName, template);
+    modifyJsonFiles(pluginName, projectName, template);
     createGitIgnore(BUILD_DIR);
   };
 
@@ -159,7 +159,7 @@ export const createProjectTemplate = (args) => {
     });
   };
 
-  const createJsonFiles = (pluginName, projectName, template) => {
+  const modifyJsonFiles = (pluginName, projectName, template) => {
     //Edit manifest.json
     const manifestPath = `${BUILD_DIR}/manifest.json`;
     let manifestFile = editJsonFile(manifestPath);

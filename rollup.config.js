@@ -6,58 +6,48 @@ import autoExternal from "rollup-plugin-auto-external";
 
 const production = !process.env.ROLLUP_WATCH;
 
-export default [
-  {
-    input: "src/index.js",
-    output: {
-      name: "cli",
-      file: "dist/cli.js",
-      format: "cjs",
-      globals: {
-        fs: "fs",
-        inquirer: "inquirer",
-        arg: "arg",
-        chalk: "chalk",
-        ora: "ora",
-        "edit-json-file": "editJsonFile",
-        child_process: "child_process",
-      },
-    },
-    plugins: [
-      resolve({
-        browser: false,
-      }),
-
-      autoExternal(),
-
-      // nodePolyfills(),
-
-      // json(),
-
-      typescript({ sourceMap: !production }),
-
-      commonjs(),
-
-      // If dev mode, serve
-      !production && serve(),
-
-      // If prod mode, minify
-      production && terser(),
-    ],
-    watch: {
-      clearScreen: true,
+export default {
+  input: "src/index.js",
+  output: {
+    name: "cli",
+    file: "dist/cli.js",
+    format: "cjs",
+    globals: {
+      fs: "fs",
+      inquirer: "inquirer",
+      arg: "arg",
+      chalk: "chalk",
+      ora: "ora",
+      "edit-json-file": "editJsonFile",
+      child_process: "child_process",
     },
   },
-];
+  plugins: [
+    resolve({
+      browser: false,
+    }),
+
+    autoExternal(),
+
+    typescript({ sourceMap: !production }),
+
+    commonjs(),
+
+    // If dev mode, serve
+    !production && serve(),
+
+    // If prod mode, minify
+    production && terser(),
+  ],
+  watch: {
+    clearScreen: true,
+  },
+};
 
 function serve() {
   let started = false;
 
   return {
-    writeBundle() {
-      // if (!started) {
-      //   started = true;
-      // }
-    },
+    writeBundle() {},
   };
 }

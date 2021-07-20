@@ -4,9 +4,10 @@
   "description": "A tool for creating a starter project for creating a Figma plugin using a React UI",
   "main": "cli.js",
   "scripts": {
-    "build": "rollup -c",
+    "build": "jest && rollup -c",
     "dev": "rollup -c -w",
     "test": "jest",
+    "test:watch": "jest --watch -o",
     "create-react-figma-plugin": "node dist/cli.js"
   },
   "bin": {
