@@ -1,11 +1,10 @@
 import inquirer from "inquirer";
-import { exec } from "child_process";
 import fs from "fs";
 import chalk from "chalk";
-import ora from "ora";
 import editJsonFile from "edit-json-file";
 
 import { parseArgumentsIntoOptions } from "./parseArguments";
+import { installTemplateDependencies } from "./installDependencies";
 
 const TEMPLATE_NAMES = {
   javascript: "figma-react-plugin-template-js",
@@ -169,43 +168,27 @@ export const createProjectTemplate = (args) => {
     packageFile.set("name", projectName);
     packageFile.save();
 
-    //Initialise loading spinner
-    console.log("");
-    const spinner = ora("Installing packages").start();
-    spinner.color = "blue";
-    spinner.text = "Installing packages";
+    installTemplateDependencies(options.currentDirectory, projectName).then(
+      (instructions) => {
+        // Display info on complete
+        console.log("");
+        console.log("---------------------");
+        console.log("");
 
-    //Run npm install
-    let command;
-    let completionInstruction;
-    if (options.currentDirectory) {
-      command = `npm install`;
-      completionInstruction = `npm run dev`;
-    } else {
-      command = `cd ${projectName} && npm install`;
-      completionInstruction = `cd ${projectName} && npm run dev`;
-    }
+        console.log(chalk.green.bold("Project successfully created"));
 
-    let installCommand = exec(command, function (err, stdout, stderr) {
-      spinner.stop();
-      console.log("");
-      console.log("---------------------");
-      console.log("");
+        console.log(
+          chalk`Run '{magenta.bold ${instructions}}' to start the development server.`
+        );
+        console.log("");
+        console.log(
+          chalk`Read the {bold Readme} for instructions on how to add your plugin to Figma for development`
+        );
 
-      console.log(chalk.green.bold("Project successfully created"));
-
-      console.log(
-        chalk`Run '{magenta.bold ${completionInstruction}}' to start the development server.`
-      );
-      console.log("");
-      console.log(
-        chalk`Read the {bold Readme} for instructions on how to add your plugin to Figma for development`
-      );
-
-      console.log("");
-      console.log("---------------------");
-      if (err) throw err;
-    });
+        console.log("");
+        console.log("---------------------");
+      }
+    );
   };
 };
 
