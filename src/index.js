@@ -1,10 +1,11 @@
 import inquirer from "inquirer";
 import { exec } from "child_process";
 import fs from "fs";
-import arg from "arg";
 import chalk from "chalk";
 import ora from "ora";
 import editJsonFile from "edit-json-file";
+
+import { parseArgumentsIntoOptions } from "./parseArguments";
 
 const TEMPLATE_NAMES = {
   javascript: "figma-react-plugin-template-js",
@@ -35,12 +36,8 @@ export const createProjectTemplate = (args) => {
       // Set build directory based on input args
       if (options.currentDirectory) {
         BUILD_DIR = `${CURR_DIR}`;
-        console.log("build dir");
-        console.log(BUILD_DIR);
       } else {
         BUILD_DIR = `${CURR_DIR}/${name.projectName}`;
-        console.log("build dir");
-        console.log(BUILD_DIR);
       }
 
       // Ask for Figma plugin name
@@ -230,27 +227,4 @@ psd
 thumb
 sketch`;
   fs.writeFileSync(ignorePath, content, "utf8");
-};
-
-// Define input arguments
-export const parseArgumentsIntoOptions = (rawArgs) => {
-  //TODO handle when user inputs both --ts & --js
-  const args = arg(
-    {
-      "--typescript": Boolean,
-      "--javascript": Boolean,
-      "--currDir": Boolean,
-      "--currentDirectory": "--currDir",
-      "--ts": "--typescript",
-      "--js": "--javascript",
-    },
-    {
-      argv: rawArgs.slice(2),
-    }
-  );
-  return {
-    typescript: args["--typescript"] || false,
-    javascript: args["--javascript"] || false,
-    currentDirectory: args["--currDir"] || false,
-  };
 };

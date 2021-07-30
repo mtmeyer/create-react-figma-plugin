@@ -1,4 +1,4 @@
-import { parseArgumentsIntoOptions } from "./index";
+import { parseArgumentsIntoOptions } from "./parseArguments";
 
 let defaultArgs = process.argv;
 
