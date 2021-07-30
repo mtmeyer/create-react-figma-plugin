@@ -17,9 +17,7 @@ export const createProjectTemplate = (args) => {
   let BUILD_DIR;
 
   //Ask for project name
-  console.log(
-    chalk.cyan.bold("What would you like paaaaaaaaroject to be called?")
-  );
+  console.log(chalk.cyan.bold("What would you like the project to be called?"));
   inquirer
     .prompt([
       {
@@ -131,7 +129,7 @@ export const createProjectTemplate = (args) => {
 
     //Trigger file creation functions
     createDirectoryContents(templatePath, BUILD_DIR);
-    createJsonFiles(pluginName, projectName, template);
+    modifyJsonFiles(pluginName, projectName, template);
     createGitIgnore(BUILD_DIR);
   };
 
@@ -161,7 +159,7 @@ export const createProjectTemplate = (args) => {
     });
   };
 
-  const createJsonFiles = (pluginName, projectName, template) => {
+  const modifyJsonFiles = (pluginName, projectName, template) => {
     //Edit manifest.json
     const manifestPath = `${BUILD_DIR}/manifest.json`;
     let manifestFile = editJsonFile(manifestPath);
@@ -235,7 +233,8 @@ sketch`;
 };
 
 // Define input arguments
-const parseArgumentsIntoOptions = (rawArgs) => {
+export const parseArgumentsIntoOptions = (rawArgs) => {
+  //TODO handle when user inputs both --ts & --js
   const args = arg(
     {
       "--typescript": Boolean,
