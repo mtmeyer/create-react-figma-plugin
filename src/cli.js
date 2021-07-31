@@ -12,99 +12,72 @@ const TEMPLATE_NAMES = {
   typescript: "figma-react-plugin-template-ts",
 };
 
-export const createProjectTemplate = (args) => {
+const CURR_DIR = process.cwd();
+let BUILD_DIR;
+
+export const createProjectTemplate = async (args) => {
   let options = parseArgumentsIntoOptions(args);
-  const CURR_DIR = process.cwd();
-  let BUILD_DIR;
 
-  //Ask for project name
+  // Ask for project name
   console.log(chalk.cyan.bold("What would you like the project to be called?"));
-  inquirer
-    .prompt([
-      {
-        name: "projectName",
-        type: "input",
-        message: "Project name:",
-        validate: (input) => {
-          if (/^([a-z\-\_\d])+$/.test(input)) return true;
-          else
-            return "Project name may only include lowecase letters, numbers, underscores and hashes.";
-        },
+  const project = await inquirer.prompt([
+    {
+      name: "name",
+      type: "input",
+      message: "Project name:",
+      validate: (input) => {
+        if (/^([a-z\-\_\d])+$/.test(input)) return true;
+        else
+          return "Project name may only include lowecase letters, numbers, underscores and hashes.";
       },
-    ])
-    .then((name) => {
-      // Set build directory based on input args
-      if (options.currentDirectory) {
-        BUILD_DIR = `${CURR_DIR}`;
-      } else {
-        BUILD_DIR = `${CURR_DIR}/${name.projectName}`;
-      }
+    },
+  ]);
+  setBuildDirectory(options.currentDirectory, project.name);
 
-      // Ask for Figma plugin name
-      console.log("");
-      console.log(
-        chalk.cyan.bold("What would you like the Figma plugin to be called?")
-      );
-      inquirer
-        .prompt([
-          {
-            name: "pluginName",
-            type: "input",
-            message: "Figma plugin name:",
-            default: name.projectName,
-            validate: (input) => {
-              if (/^([A-Za-z\-\_\d ])+$/.test(input)) return true;
-              else
-                return "Plugin name may only include letters, numbers, underscores, hashes and spaces.";
-            },
-          },
-        ])
-        .then((plugin) => {
-          // Ask for whether the project should be created with JS or TS
-          if (!options.typescript && !options.javascript) {
-            console.log("");
-            inquirer
-              .prompt([
-                {
-                  name: "template",
-                  type: "list",
-                  message: "Please choose which template to use",
-                  choices: ["JavaScript", "TypeScript"],
-                  default: "JavaScript",
-                },
-              ])
-              .then((template) => {
-                triggerProjectCreation(
-                  name.projectName,
-                  plugin.pluginName,
-                  template.template
-                );
-              });
-          } else {
-            if (options.typescript) {
-              triggerProjectCreation(
-                name.projectName,
-                plugin.pluginName,
-                "TypeScript"
-              );
-            } else if (options.javascript) {
-              triggerProjectCreation(
-                name.projectName,
-                plugin.pluginName,
-                "javascript"
-              );
-            } else {
-              triggerProjectCreation(
-                name.projectName,
-                plugin.pluginName,
-                "javascript"
-              );
-            }
-          }
-        });
-    });
+  // Ask for Figma plugin name
+  console.log("");
+  console.log(
+    chalk.cyan.bold("What would you like the Figma plugin to be called?")
+  );
+  const plugin = await inquirer.prompt([
+    {
+      name: "name",
+      type: "input",
+      message: "Figma plugin name:",
+      default: project.name,
+      validate: (input) => {
+        if (/^([A-Za-z\-\_\d ])+$/.test(input)) return true;
+        else
+          return "Plugin name may only include letters, numbers, underscores, hashes and spaces.";
+      },
+    },
+  ]);
 
-  const triggerProjectCreation = (name, plugin, template) => {
+  // Ask for whether the project should be created with JS or TS
+  let template;
+  if (options.typescript) {
+    template = { template: "TypeScript" };
+  } else if (options.javascript) {
+    template = { template: "JavaScript" };
+  } else {
+    console.log("");
+    console.log(
+      chalk.cyan.bold("Which template would you like your project to use?")
+    );
+    template = await inquirer.prompt([
+      {
+        name: "template",
+        type: "list",
+        message: "Template:",
+        choices: ["JavaScript", "TypeScript"],
+        default: "JavaScript",
+      },
+    ]);
+  }
+
+  triggerProjectCreation(project.name, plugin.name, template.template);
+
+  function triggerProjectCreation(name, plugin, template) {
     console.log("");
     console.log(chalk.green.bold("Creating your project..."));
     console.log("P.S. This might take a bit");
@@ -128,9 +101,9 @@ export const createProjectTemplate = (args) => {
     createDirectoryContents(templatePath, BUILD_DIR);
     modifyJsonFiles(pluginName, projectName, template);
     createGitIgnore(BUILD_DIR);
-  };
+  }
 
-  const modifyJsonFiles = (pluginName, projectName) => {
+  function modifyJsonFiles(pluginName, projectName) {
     modifyJsonFile(`${BUILD_DIR}/manifest.json`, pluginName);
     modifyJsonFile(`${BUILD_DIR}/package.json`, projectName);
 
@@ -155,10 +128,19 @@ export const createProjectTemplate = (args) => {
         console.log("---------------------");
       }
     );
-  };
+  }
 };
 
-const createGitIgnore = (directory) => {
+function setBuildDirectory(currentDirectory, projectName) {
+  // Set build directory based on input args
+  if (currentDirectory) {
+    BUILD_DIR = `${CURR_DIR}`;
+  } else {
+    BUILD_DIR = `${CURR_DIR}/${projectName}`;
+  }
+}
+
+function createGitIgnore(directory) {
   const ignorePath = `${directory}/.gitignore`;
   const content = `
 .DS_*
@@ -176,4 +158,4 @@ psd
 thumb
 sketch`;
   fs.writeFileSync(ignorePath, content, "utf8");
-};
+}
