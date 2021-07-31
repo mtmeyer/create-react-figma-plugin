@@ -1,6 +1,6 @@
 {
   "name": "@mtmeyer/create-react-figma-plugin",
-  "version": "1.2.5",
+  "version": "1.2.6",
   "description": "A tool for creating a starter project for creating a Figma plugin using a React UI",
   "main": "cli.js",
   "scripts": {
@@ -48,6 +48,7 @@
     "@rollup/plugin-node-resolve": "^13.0.2",
     "@types/ora": "^3.2.0",
     "jest": "^27.0.6",
+    "regenerator-runtime": "^0.13.9",
     "rollup": "^2.53.2",
     "rollup-plugin-auto-external": "^2.0.0",
     "rollup-plugin-livereload": "^2.0.5",

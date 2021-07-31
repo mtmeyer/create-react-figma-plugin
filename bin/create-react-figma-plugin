@@ -1,4 +1,4 @@
 #!/usr/bin/env node
 
 require = require("esm")(module /*, options */);
-require("../dist/cli.js").createProjectTemplate(process.argv);
+require("../build/cli-bundle.js").createProjectTemplate(process.argv);
