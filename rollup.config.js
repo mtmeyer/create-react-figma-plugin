@@ -7,10 +7,10 @@ import autoExternal from "rollup-plugin-auto-external";
 const production = !process.env.ROLLUP_WATCH;
 
 export default {
-  input: "src/index.js",
+  input: "src/cli.js",
   output: {
     name: "cli",
-    file: "dist/cli.js",
+    file: "dist/cli-bundle.js",
     format: "cjs",
     globals: {
       fs: "fs",

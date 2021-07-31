@@ -5,6 +5,7 @@ import editJsonFile from "edit-json-file";
 
 import { parseArgumentsIntoOptions } from "./parseArguments";
 import { installTemplateDependencies } from "./installDependencies";
+import { modifyJsonFile } from "./modifyJsonFiles";
 
 const TEMPLATE_NAMES = {
   javascript: "figma-react-plugin-template-js",
@@ -155,18 +156,9 @@ export const createProjectTemplate = (args) => {
     });
   };
 
-  const modifyJsonFiles = (pluginName, projectName, template) => {
-    //Edit manifest.json
-    const manifestPath = `${BUILD_DIR}/manifest.json`;
-    let manifestFile = editJsonFile(manifestPath);
-    manifestFile.set("name", pluginName);
-    manifestFile.save();
-
-    //Edit package.json
-    const packagePath = `${BUILD_DIR}/package.json`;
-    let packageFile = editJsonFile(packagePath);
-    packageFile.set("name", projectName);
-    packageFile.save();
+  const modifyJsonFiles = (pluginName, projectName) => {
+    modifyJsonFile(`${BUILD_DIR}/manifest.json`, pluginName);
+    modifyJsonFile(`${BUILD_DIR}/package.json`, projectName);
 
     installTemplateDependencies(options.currentDirectory, projectName).then(
       (instructions) => {
