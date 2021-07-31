@@ -1,6 +1,7 @@
 import inquirer from "inquirer";
 import fs from "fs";
 import chalk from "chalk";
+import gi from "gitignore";
 
 import { parseArgumentsIntoOptions } from "./components/parseArguments";
 import { installTemplateDependencies } from "./components/installDependencies";
@@ -54,17 +55,17 @@ export const createProjectTemplate = async (args) => {
   ]);
 
   // Ask for whether the project should be created with JS or TS
-  let template;
+  let chosenTemplate;
   if (options.typescript) {
-    template = { template: "TypeScript" };
+    chosenTemplate = { template: "TypeScript" };
   } else if (options.javascript) {
-    template = { template: "JavaScript" };
+    chosenTemplate = { template: "JavaScript" };
   } else {
     console.log("");
     console.log(
       chalk.cyan.bold("Which template would you like your project to use?")
     );
-    template = await inquirer.prompt([
+    chosenTemplate = await inquirer.prompt([
       {
         name: "template",
         type: "list",
@@ -75,60 +76,52 @@ export const createProjectTemplate = async (args) => {
     ]);
   }
 
-  triggerProjectCreation(project.name, plugin.name, template.template);
+  console.log("");
+  console.log(chalk.green.bold("Creating your project..."));
+  console.log("");
+  console.log("P.S. This might take a bit");
 
-  function triggerProjectCreation(name, plugin, template) {
-    console.log("");
-    console.log(chalk.green.bold("Creating your project..."));
-    console.log("P.S. This might take a bit");
-    const projectName = name;
-    const pluginName = plugin;
+  const projectName = project.name;
+  const pluginName = plugin.name;
+  const template = chosenTemplate.template;
 
-    // Set template based on input args
-    let templatePath;
-    if (template.toLowerCase() == "javascript") {
-      templatePath = `${__dirname}/../templates/${TEMPLATE_NAMES.javascript}`;
-    } else if (template.toLowerCase() == "typescript") {
-      templatePath = `${__dirname}/../templates/${TEMPLATE_NAMES.typescript}`;
-    }
+  const templatePath = setTemplateDirectory(template);
 
-    // Create directory if --currDir flag was not used
-    if (!options.currentDirectory) {
-      fs.mkdirSync(`${BUILD_DIR}`);
-    }
-
-    //Trigger file creation functions
-    createDirectoryContents(templatePath, BUILD_DIR);
-    modifyJsonFiles(pluginName, projectName, template);
-    createGitIgnore(BUILD_DIR);
+  // Create directory if --currDir flag was not used
+  if (!options.currentDirectory) {
+    fs.mkdirSync(`${BUILD_DIR}`);
   }
 
-  function modifyJsonFiles(pluginName, projectName) {
-    modifyJsonFile(`${BUILD_DIR}/manifest.json`, pluginName);
-    modifyJsonFile(`${BUILD_DIR}/package.json`, projectName);
+  //Trigger file creation
+  createDirectoryContents(templatePath, BUILD_DIR);
 
-    installTemplateDependencies(options.currentDirectory, projectName).then(
-      (instructions) => {
-        // Display info on complete
-        console.log("");
-        console.log("---------------------");
-        console.log("");
+  // Modify relevant json files
+  modifyJsonFile(`${BUILD_DIR}/manifest.json`, pluginName);
+  modifyJsonFile(`${BUILD_DIR}/package.json`, projectName);
 
-        console.log(chalk.green.bold("Project successfully created"));
+  // Install npm dependencies & get output instructions
+  let instructions = await installTemplateDependencies(
+    options.currentDirectory,
+    projectName
+  );
 
-        console.log(
-          chalk`Run '{magenta.bold ${instructions}}' to start the development server.`
-        );
-        console.log("");
-        console.log(
-          chalk`Read the {bold Readme} for instructions on how to add your plugin to Figma for development`
-        );
+  // Display instructions on complete
+  console.log("");
+  console.log("---------------------");
+  console.log("");
 
-        console.log("");
-        console.log("---------------------");
-      }
-    );
-  }
+  console.log(chalk.green.bold("Project successfully created"));
+
+  console.log(
+    chalk`Run '{magenta.bold ${instructions}}' to start the development server.`
+  );
+  console.log("");
+  console.log(
+    chalk`Read the {bold Readme} for instructions on how to add your plugin to Figma for development`
+  );
+
+  console.log("");
+  console.log("---------------------");
 };
 
 function setBuildDirectory(currentDirectory, projectName) {
@@ -140,22 +133,11 @@ function setBuildDirectory(currentDirectory, projectName) {
   }
 }
 
-function createGitIgnore(directory) {
-  const ignorePath = `${directory}/.gitignore`;
-  const content = `
-.DS_*
-*.log
-logs
-**/*.backup.*
-**/*.back.*
-
-node_modules
-bower_components
-
-*.sublime*
-
-psd
-thumb
-sketch`;
-  fs.writeFileSync(ignorePath, content, "utf8");
+function setTemplateDirectory(template) {
+  // Set template based on input args
+  if (template === "JavaScript") {
+    return `${__dirname}/../templates/${TEMPLATE_NAMES.javascript}`;
+  } else if (template === "TypeScript") {
+    return `${__dirname}/../templates/${TEMPLATE_NAMES.typescript}`;
+  }
 }
