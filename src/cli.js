@@ -6,6 +6,7 @@ import { parseArgumentsIntoOptions } from "./components/parseArguments";
 import { installTemplateDependencies } from "./components/installDependencies";
 import { modifyJsonFile } from "./components/modifyJsonFiles";
 import { createDirectoryContents } from "./components/createDirectoryContents";
+import { createGitIgnore } from "./components/createGitIgnore";
 
 const TEMPLATE_NAMES = {
   javascript: "figma-react-plugin-template-js",
@@ -93,6 +94,7 @@ export const createProjectTemplate = async (args) => {
 
   //Trigger file creation
   createDirectoryContents(templatePath, BUILD_DIR);
+  createGitIgnore(BUILD_DIR);
 
   // Modify relevant json files
   modifyJsonFile(`${BUILD_DIR}/manifest.json`, pluginName);
