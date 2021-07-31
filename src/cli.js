@@ -1,11 +1,11 @@
 import inquirer from "inquirer";
 import fs from "fs";
 import chalk from "chalk";
-import editJsonFile from "edit-json-file";
 
-import { parseArgumentsIntoOptions } from "./parseArguments";
-import { installTemplateDependencies } from "./installDependencies";
-import { modifyJsonFile } from "./modifyJsonFiles";
+import { parseArgumentsIntoOptions } from "./components/parseArguments";
+import { installTemplateDependencies } from "./components/installDependencies";
+import { modifyJsonFile } from "./components/modifyJsonFiles";
+import { createDirectoryContents } from "./components/createDirectoryContents";
 
 const TEMPLATE_NAMES = {
   javascript: "figma-react-plugin-template-js",
@@ -128,32 +128,6 @@ export const createProjectTemplate = (args) => {
     createDirectoryContents(templatePath, BUILD_DIR);
     modifyJsonFiles(pluginName, projectName, template);
     createGitIgnore(BUILD_DIR);
-  };
-
-  const createDirectoryContents = (templatePath, newProjectPath) => {
-    const filesToCreate = fs.readdirSync(templatePath);
-
-    filesToCreate.forEach((file) => {
-      const origFilePath = `${templatePath}/${file}`;
-
-      // Get current file info
-      const stats = fs.statSync(origFilePath);
-
-      if (stats.isFile()) {
-        const contents = fs.readFileSync(origFilePath, "utf8");
-
-        const writePath = `${newProjectPath}/${file}`;
-        fs.writeFileSync(writePath, contents, "utf8");
-      } else if (stats.isDirectory()) {
-        // Create subfolders with contents
-        fs.mkdirSync(`${newProjectPath}/${file}`);
-
-        createDirectoryContents(
-          `${templatePath}/${file}`,
-          `${newProjectPath}/${file}`
-        );
-      }
-    });
   };
 
   const modifyJsonFiles = (pluginName, projectName) => {
