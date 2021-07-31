@@ -10,7 +10,7 @@ export default {
   input: "src/cli.js",
   output: {
     name: "cli",
-    file: "dist/cli-bundle.js",
+    file: "build/cli-bundle.js",
     format: "cjs",
     globals: {
       fs: "fs",
