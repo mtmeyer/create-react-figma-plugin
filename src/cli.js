@@ -1,7 +1,6 @@
 import inquirer from "inquirer";
 import fs from "fs";
 import chalk from "chalk";
-import gi from "gitignore";
 
 import { parseArgumentsIntoOptions } from "./components/parseArguments";
 import { installTemplateDependencies } from "./components/installDependencies";
