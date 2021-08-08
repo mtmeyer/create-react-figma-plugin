@@ -1,6 +1,9 @@
 import fs from "fs";
 
-export function createDirectoryContents(templatePath, newProjectPath) {
+export function createDirectoryContents(
+  templatePath: string,
+  newProjectPath: string
+) {
   const filesToCreate = fs.readdirSync(templatePath);
 
   filesToCreate.forEach((file) => {

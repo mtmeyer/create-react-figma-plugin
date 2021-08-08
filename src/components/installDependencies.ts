@@ -1,7 +1,10 @@
 import ora from "ora";
 import { exec } from "child_process";
 
-export function installTemplateDependencies(currentDirectory, projectName) {
+export function installTemplateDependencies(
+  currentDirectory: boolean,
+  projectName: string
+) {
   return new Promise(async (resolve, reject) => {
     //Initialise loading spinner
     console.log("");
@@ -10,8 +13,8 @@ export function installTemplateDependencies(currentDirectory, projectName) {
     spinner.text = "Installing packages";
 
     //Set command and completion instructions
-    let command;
-    let completionInstruction;
+    let command: string;
+    let completionInstruction: string;
     if (currentDirectory) {
       command = `npm install`;
       completionInstruction = `npm run dev`;

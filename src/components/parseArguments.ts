@@ -1,7 +1,7 @@
 import arg from "arg";
 
 // Define input arguments
-export function parseArgumentsIntoOptions(rawArgs) {
+export function parseArgumentsIntoOptions(rawArgs: Array<string>) {
   //TODO handle when user inputs both --ts & --js
   const args = arg(
     {

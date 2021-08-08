@@ -14,9 +14,9 @@ const TEMPLATE_NAMES = {
 };
 
 const CURR_DIR = process.cwd();
-let BUILD_DIR;
+let BUILD_DIR: string;
 
-export const createProjectTemplate = async (args) => {
+export const createProjectTemplate = async (args: Array<string>) => {
   let options = parseArgumentsIntoOptions(args);
 
   // Ask for project name
@@ -125,7 +125,7 @@ export const createProjectTemplate = async (args) => {
   console.log("---------------------");
 };
 
-function setBuildDirectory(currentDirectory, projectName) {
+function setBuildDirectory(currentDirectory: boolean, projectName: string) {
   // Set build directory based on input args
   if (currentDirectory) {
     BUILD_DIR = `${CURR_DIR}`;
@@ -134,11 +134,11 @@ function setBuildDirectory(currentDirectory, projectName) {
   }
 }
 
-function setTemplateDirectory(template) {
+function setTemplateDirectory(template: string): string {
   // Set template based on input args
   if (template === "JavaScript") {
     return `${__dirname}/../templates/${TEMPLATE_NAMES.javascript}`;
   } else if (template === "TypeScript") {
     return `${__dirname}/../templates/${TEMPLATE_NAMES.typescript}`;
-  }
+  } else return "";
 }
