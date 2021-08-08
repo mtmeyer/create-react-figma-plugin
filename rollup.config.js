@@ -25,6 +25,7 @@ export default {
   plugins: [
     resolve({
       browser: false,
+      extensions: ["js", "ts"],
     }),
 
     autoExternal(),

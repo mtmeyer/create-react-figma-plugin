@@ -8,7 +8,7 @@
     "esModuleInterop": true,
     "allowJs": true,
     "outDir": "dist",
-    "types": ["node"]
+    "types": ["node", "jest"]
   },
   "include": ["./src/**/*"],
   "exclude": ["./bin/**/*", "./templates/**/*", "./dist/**/*"]
