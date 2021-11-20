@@ -1,5 +1,9 @@
 # Create React Figma Plugin
 
+![](https://img.shields.io/npm/l/@mtmeyer/create-react-figma-plugin?style=for-the-badge)
+![](https://img.shields.io/npm/v/@mtmeyer/create-react-figma-plugin?style=for-the-badge)
+![](https://img.shields.io/npm/dm/@mtmeyer/create-react-figma-plugin?style=for-the-badge)
+
 ![](img/header.svg)
 
 A tool to get you started making Figma plugins with a React UI <sup>1</sup>.
