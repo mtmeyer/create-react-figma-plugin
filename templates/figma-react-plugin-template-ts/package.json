@@ -5,8 +5,8 @@
   "license": "ISC",
   "scripts": {
     "build": "rollup -c",
-    "dev": "rollup -c -w",
-    "start": "sirv dist"
+    "dev": "PORT=5000 rollup -c -w",
+    "start": "sirv dist --port 5000"
   },
   "dependencies": {
     "react": "^17.0.2",
@@ -16,28 +16,32 @@
     "@babel/plugin-transform-runtime": "^7.14.5",
     "@babel/preset-env": "^7.14.7",
     "@babel/preset-react": "^7.14.5",
-    "@figma/plugin-typings": "^1.26.0",
-    "@rollup/plugin-babel": "^5.3.0",
-    "@rollup/plugin-commonjs": "^19.0.1",
-    "@rollup/plugin-node-resolve": "^13.0.2",
-    "@rollup/plugin-replace": "^2.4.2",
-    "@svgr/rollup": "^5.5.0",
+    "@figma/plugin-typings": "^1.62.0",
+    "@rollup/plugin-babel": "^5.3.1",
+    "@rollup/plugin-commonjs": "^24.0.1",
+    "@rollup/plugin-node-resolve": "^15.0.2",
+    "@rollup/plugin-replace": "^5.0.2",
+    "@svgr/rollup": "^7.0.0",
     "@types/react": "^17.0.14",
     "@types/react-dom": "^17.0.9",
     "@types/sass": "^1.16.1",
-    "babel-loader": "^8.2.2",
+    "babel-loader": "^9.1.2",
     "edit-json-file": "^1.6.0",
     "prettier": "^2.3.1",
     "rollup": "^2.53.2",
     "rollup-plugin-bundle-html-plus": "^1.4.0",
     "rollup-plugin-html-bundle": "^0.0.3",
     "rollup-plugin-livereload": "^2.0.5",
-    "rollup-plugin-postcss": "^4.0.0",
-    "rollup-plugin-scss": "^3.0.0",
+    "rollup-plugin-postcss": "^4.0.2",
+    "rollup-plugin-scss": "^4.0.0",
     "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-typescript": "^1.0.1",
-    "sass": "^1.35.2",
-    "sirv-cli": "^1.0.12",
-    "typescript": "^4.3.5"
+    "sass": "^1.61.0",
+    "sirv-cli": "^2.0.2",
+    "typescript": "4.8.3"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=7.0.0"
   }
 }

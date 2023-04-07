@@ -1,6 +1,6 @@
 {
   "name": "@mtmeyer/create-react-figma-plugin",
-  "version": "1.2.8",
+  "version": "1.2.9",
   "description": "A tool for creating a starter project for creating a Figma plugin using a React UI",
   "main": "cli.js",
   "scripts": {
@@ -43,15 +43,15 @@
   },
   "devDependencies": {
     "@babel/preset-env": "^7.14.7",
-    "@rollup/plugin-commonjs": "^19.0.1",
-    "@rollup/plugin-json": "^4.1.0",
-    "@rollup/plugin-node-resolve": "^13.0.2",
+    "@rollup/plugin-commonjs": "^24.0.1",
+    "@rollup/plugin-json": "^6.0.0",
+    "@rollup/plugin-node-resolve": "^15.0.2",
     "@types/edit-json-file": "^1.4.1",
     "@types/inquirer": "^7.3.3",
     "@types/jest": "^26.0.24",
     "@types/ora": "^3.2.0",
     "jest": "^27.0.6",
-    "regenerator-runtime": "^0.13.9",
+    "regenerator-runtime": "^0.13.11",
     "rollup": "^2.53.2",
     "rollup-plugin-auto-external": "^2.0.0",
     "rollup-plugin-livereload": "^2.0.5",
@@ -59,6 +59,6 @@
     "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-typescript": "^1.0.1",
     "ts-jest": "^27.0.4",
-    "typescript": "^4.3.5"
+    "typescript": "^5.0.3"
   }
 }
